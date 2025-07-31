@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+        
+// User model for authentication
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  patients  Patient[]
+
+  @@map("users")
+}
+
+// Patient model
+model Patient {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  firstName      String   @map("first_name")
+  lastName       String   @map("last_name")
+  dateOfBirth    DateTime @map("date_of_birth")
+  phoneNumber    String?  @map("phone_number")
+  email          String?
+  address        String?
+  medicalHistory String?  @map("medical_history")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  bookings       Booking[]
+  user           User     @relation(fields: [userId], references: [id])
+
+  @@map("patients")
+}
+
+// Queue Status Enum
+enum QueueStatus {
+  pending
+  active
+  completed
+  cancelled
+  pre_booked
+}
+
+// Patient Status Enum
+enum PatientStatus {
+  pending
+  confirmed
+  intake
+  ready_for_provider
+  provider
+  ready_for_discharge
+  discharged
+  no_show
+  cancelled
+  // Legacy statuses - will be migrated
+  checked_in
+  in_consultation
+  completed
+}
+
+// Booking model with telehealth queue fields
+model Booking {
+  id                   String        @id @default(uuid())
+  patientId            String        @map("patient_id")
+  doctorName           String        @map("doctor_name")
+  bookingDate          DateTime      @map("booking_date")
+  notes                String?
+  chiefComplaint       String?       @map("chief_complaint")
+  isAdhoc              Boolean       @default(false) @map("is_adhoc")
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime      @updatedAt @map("updated_at")
+  queueStatus          QueueStatus   @default(pending) @map("queue_status")
+  patientStatus        PatientStatus @default(pending) @map("patient_status")
+  checkInTime          DateTime?     @map("check_in_time")
+  consultationStartTime DateTime?    @map("consultation_start_time")
+  consultationEndTime  DateTime?     @map("consultation_end_time")
+  providerNotes        String?       @map("provider_notes")
+  patientFeedback      String?       @map("patient_feedback")
+  patient              Patient       @relation(fields: [patientId], references: [id])
+
+  @@map("bookings")
+}
