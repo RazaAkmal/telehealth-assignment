@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TeleHealth Assignment
 
-## Getting Started
+A modern telehealth application built with Next.js, TypeScript, TailwindCSS, ShadCN/UI, and Supabase.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **TailwindCSS** - Utility-first CSS framework
+- **ShadCN/UI** - Beautiful and accessible React components
+- **Supabase** - Backend as a Service for authentication and database
+
+## Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+- Supabase account
+
+## Setup Instructions
+
+### 1. Clone and Install Dependencies
+
+```bash
+git clone <repository-url>
+cd telehealth-assignment
+npm install
+```
+
+### 2. Supabase Setup
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to Project Settings > API
+3. Copy your project URL and anon key
+
+### 3. Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Optional: For server-side operations
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+### 4. Database Setup
+
+Run the database migrations and seed data:
+
+```bash
+# This will create the necessary tables and insert sample data
+npm run db:seed
+```
+
+### 5. Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # React components
+│   ├── ui/             # ShadCN/UI components
+│   └── layout/         # Layout components
+├── lib/                # Utility functions
+├── types/              # TypeScript type definitions
+├── hooks/              # Custom React hooks
+└── utils/              # Supabase client and utilities
+```
 
-## Learn More
+## Environment Variables Required
 
-To learn more about Next.js, take a look at the following resources:
+For reviewers setting up their own Supabase instance, the following environment variables are required:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (optional, for server-side operations)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Schema
 
-## Deploy on Vercel
+The application uses the following main tables:
+- `users` - User profiles and authentication
+- `doctors` - Doctor profiles and specializations
+- `patients` - Patient profiles and medical information
+- `appointments` - Appointment scheduling and management
+- `messages` - Chat messages between patients and doctors
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- User authentication (patients and doctors)
+- Doctor profiles and specializations
+- Appointment booking and management
+- Real-time messaging
+- Medical records management
+- Responsive design
+- Type-safe development with TypeScript
+
+## Development
+
+This project uses:
+- Next.js 15 with App Router
+- Supabase for backend services
+- TailwindCSS for styling
+- ESLint for code linting
+- TypeScript for type checking
