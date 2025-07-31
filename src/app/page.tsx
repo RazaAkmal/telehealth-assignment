@@ -10,7 +10,7 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-gray-900">HealthCare</h1>
             <nav className="flex space-x-6">
               <Link href="/login" className="text-gray-600 hover:text-gray-900">Login</Link>
-              <Link href="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Up</Link>
+              <Link href="/register" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Up</Link>
             </nav>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function Home() {
             Join thousands of patients who trust us with their healthcare needs.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link href="/signup" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
+            <Link href="/register" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
               Get Started
             </Link>
             <Link href="/doctors" className="bg-white text-gray-900 px-6 py-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-medium">

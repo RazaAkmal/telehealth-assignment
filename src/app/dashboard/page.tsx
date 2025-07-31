@@ -1,6 +1,50 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from "next/link"
+import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
+  import type { User } from '@supabase/supabase-js'
 
 export default function DashboardPage() {
+
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
+  const supabase = createClient()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data, error } = await supabase.auth.getUser()
+        console.log(data, error)
+      if (error || !data?.user) {
+        // If error or no user, redirect to login
+        router.push('/login')
+        return
+      }
+      
+      setUser(data.user)
+      setLoading(false)
+    }
+    
+    getUser()
+  }, [supabase, router])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'User'
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Simple Header */}
@@ -11,7 +55,12 @@ export default function DashboardPage() {
             <nav className="flex space-x-6">
               <Link href="/appointments" className="text-gray-600 hover:text-gray-900">Appointments</Link>
               <Link href="/profile" className="text-gray-600 hover:text-gray-900">Profile</Link>
-              <Link href="/logout" className="text-gray-600 hover:text-gray-900">Logout</Link>
+              <button 
+                onClick={handleLogout}
+                className="text-gray-600 hover:text-gray-900 cursor-pointer"
+              >
+                Logout
+              </button>
             </nav>
           </div>
         </div>
@@ -19,7 +68,7 @@ export default function DashboardPage() {
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, John!</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {userName}!</h2>
           <p className="text-gray-600">Here&apos;s your health overview</p>
         </div>
 
